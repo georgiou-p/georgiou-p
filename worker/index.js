@@ -4,6 +4,7 @@
  * Secrets needed:
  *   wrangler secret put GROQ_API_KEY
  *   wrangler secret put RESEND_API_KEY
+ *   wrangler secret put OWNER_CODE
  */
 
 import { SYSTEM_PROMPT } from './context.js';
@@ -51,7 +52,12 @@ const IMPORTANT_KEYWORDS = [
 ];
 
 const EMAIL_REGEX = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/;
-const OWNER_CODE_REGEX = /PG69\s*([\s\S]*)/i;
+
+// Escapes regex metacharacters so the owner code (a plain secret string,
+// not a pattern) can't accidentally be interpreted as one.
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -189,8 +195,12 @@ export default {
       return json({ error: 'Message too long.' }, 400);
     }
 
-    // Intercept owner command before hitting the model
-    const ownerMatch = latestText.match(OWNER_CODE_REGEX);
+    // Intercept owner command before hitting the model — the trigger
+    // phrase is a secret (env.OWNER_CODE), not hardcoded, since this
+    // source file is public.
+    const ownerMatch = env.OWNER_CODE
+      ? latestText.match(new RegExp(`${escapeRegExp(env.OWNER_CODE)}\\s*([\\s\\S]*)`, 'i'))
+      : null;
     if (ownerMatch && env.RESEND_API_KEY) {
       const note = ownerMatch[1].trim() || '(no message)';
       ctx.waitUntil(

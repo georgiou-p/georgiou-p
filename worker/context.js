@@ -44,7 +44,7 @@ AI³ — AI INTEGRITY INSTITUTE (Co-founded by Prokopis):
 Prokopis is a founding member and co-founder of AI³ (AI Integrity Institute), a non-profit organisation at ai-3.org. AI³ works with researchers, companies, and governments to put responsible AI into practice, with a vision of a world where responsible AI governance benefits all societies. It operates as a global coalition spanning research institutions, industry, and the public sector across multiple regions. Core activities include convening policymakers and academics through working groups and international conferences, producing actionable research and policy insights with a focus on underrepresented regions, and providing toolkits and training to help organisations translate AI principles into responsible practice. Membership is open and free.
 
 LANGUAGES:
-- Greek: Native (grew up in Famagusta, Cyprus)
+- Greek: Native (grew up in Cyprus and originally from Famagusta)
 - English: Native-level proficiency
 - French: Working proficiency
 
