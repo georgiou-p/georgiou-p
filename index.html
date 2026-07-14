@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Starts the ~2.8MB hero head model downloading immediately,
+         instead of waiting for the lazy-loaded 3D chunk to request it. -->
+    <link rel="preload" href="/head2_opt.glb" as="fetch" type="model/gltf-binary" crossorigin />
   </head>
   <body>
     <!--
