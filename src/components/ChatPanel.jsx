@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL || '';
-const CV_URL = '/Prokopis_Georgiou_CV.pdf';
+const CV_URL = `${import.meta.env.BASE_URL}Prokopis_Georgiou_CV.pdf`;
 
 const STARTERS = [
   'What is he currently working on?',

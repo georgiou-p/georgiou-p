@@ -1,7 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+// Served under /georgiou-p/ on the default GitHub Pages URL until the
+// georgiou.pro custom domain is purchased and public/CNAME is restored —
+// switch this back to '/' at that point (root-path serving).
 export default defineConfig({
+  base: '/georgiou-p/',
   plugins: [react()],
   build: {
     rollupOptions: {

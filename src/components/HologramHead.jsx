@@ -332,7 +332,7 @@ function HeadModel({ dragState, scrollProgress }) {
     };
   }, [gl]);
 
-  const { scene } = useGLTF('/head2_opt.glb');
+  const { scene } = useGLTF(`${import.meta.env.BASE_URL}head2_opt.glb`);
 
   const { scale, center } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene);
@@ -418,7 +418,7 @@ function HeadModel({ dragState, scrollProgress }) {
   );
 }
 
-useGLTF.preload('/head2_opt.glb');
+useGLTF.preload(`${import.meta.env.BASE_URL}head2_opt.glb`);
 
 export default function HologramHead({ scrollProgress }) {
   const dragState = useRef({ x: REST_ROT_X, y: REST_ROT_Y });
