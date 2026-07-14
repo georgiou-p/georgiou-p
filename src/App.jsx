@@ -168,7 +168,7 @@ function HomePage() {
     <main className="home-scroll" ref={scrollRef}>
       <section className="snap-section hero-section" ref={heroRef}>
         <div className="hero-visual-col">
-          <Suspense fallback={<HeroLoader />}>
+          <Suspense fallback={null}>
             <HologramHead scrollProgress={scrollProgress} />
           </Suspense>
         </div>
@@ -191,18 +191,6 @@ function HomePage() {
         </div>
       </section>
     </main>
-  );
-}
-
-// Shown while the 3D chunk (three.js/r3f) and the ~2.8MB head model
-// download — a lightweight CSS-only placeholder so the hero doesn't sit
-// blank during that fetch.
-function HeroLoader() {
-  return (
-    <div className="hero-loader" aria-hidden="true">
-      <div className="hero-loader-ring" />
-      <div className="hero-loader-ring hero-loader-ring--2" />
-    </div>
   );
 }
 
