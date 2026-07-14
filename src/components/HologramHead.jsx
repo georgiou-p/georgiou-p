@@ -245,7 +245,7 @@ function Starfield({ dragState }) {
   );
 }
 
-function HeadModel({ dragState, scrollProgress }) {
+function HeadModel({ dragState, scrollProgress, onReady }) {
   const groupRef = useRef();
   const isDragging = useRef(false);
   const lastPointer = useRef({ x: 0, y: 0 });
@@ -334,6 +334,13 @@ function HeadModel({ dragState, scrollProgress }) {
 
   const { scene } = useGLTF(`${import.meta.env.BASE_URL}head2_opt.glb`);
 
+  // Suspense only renders this component once useGLTF's promise has
+  // resolved, so reaching this point means the model is fully loaded —
+  // let the page-level loading screen know it can dismiss.
+  useEffect(() => {
+    onReady?.();
+  }, [onReady]);
+
   const { scale, center } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene);
     const size = new THREE.Vector3();
@@ -420,7 +427,7 @@ function HeadModel({ dragState, scrollProgress }) {
 
 useGLTF.preload(`${import.meta.env.BASE_URL}head2_opt.glb`);
 
-export default function HologramHead({ scrollProgress }) {
+export default function HologramHead({ scrollProgress, onReady }) {
   const dragState = useRef({ x: REST_ROT_X, y: REST_ROT_Y });
 
   return (
@@ -439,7 +446,7 @@ export default function HologramHead({ scrollProgress }) {
         <Starfield dragState={dragState} />
 
         <Suspense fallback={null}>
-          <HeadModel dragState={dragState} scrollProgress={scrollProgress} />
+          <HeadModel dragState={dragState} scrollProgress={scrollProgress} onReady={onReady} />
         </Suspense>
       </Canvas>
     </div>

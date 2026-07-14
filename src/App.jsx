@@ -4,6 +4,7 @@ import IntroPanel from './components/IntroPanel';
 import ChatPanel from './components/ChatPanel';
 import ParticleBackground from './components/ParticleBackground';
 import WhatIDoSection from './components/WhatIDoSection';
+import LoadingScreen from './components/LoadingScreen';
 import './App.css';
 
 // Heavy Three.js chunk — loaded lazily so it doesn't block initial paint
@@ -94,7 +95,7 @@ function Navbar() {
   );
 }
 
-function HomePage() {
+function HomePage({ onHeroReady }) {
   // chatExpanded = user explicitly opened chat via header tap/drag (hides left col on mobile)
   const [chatExpanded, setChatExpanded] = useState(false);
   const scrollRef = useRef(null);
@@ -169,7 +170,7 @@ function HomePage() {
       <section className="snap-section hero-section" ref={heroRef}>
         <div className="hero-visual-col">
           <Suspense fallback={null}>
-            <HologramHead scrollProgress={scrollProgress} />
+            <HologramHead scrollProgress={scrollProgress} onReady={onHeroReady} />
           </Suspense>
         </div>
         <div className="hero-text-col">
@@ -213,22 +214,46 @@ function HeroDecor() {
   );
 }
 
+function AppShell() {
+  // Tracks whether the hero's 3D scene has finished loading at least
+  // once — the loading screen is only relevant to "/" (the other routes
+  // have no 3D content), and only needs to show on the first visit, not
+  // every time the user navigates back to the home route.
+  const [heroReady, setHeroReady] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    // Safety net: if the model fails to load (network error, blocked
+    // request, etc.) onReady never fires — don't trap the visitor behind
+    // the loading screen forever.
+    const timer = setTimeout(() => setHeroReady(true), 12000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const showLoadingScreen = location.pathname === '/' && !heroReady;
+
+  return (
+    <div className="app">
+      <LoadingScreen visible={showLoadingScreen} />
+      <ParticleBackground />
+      <HeroDecor />
+      <Navbar />
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<HomePage onHeroReady={() => setHeroReady(true)} />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/experience" element={<ExperiencePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <div className="app">
-        <ParticleBackground />
-        <HeroDecor />
-        <Navbar />
-        <Suspense fallback={null}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/experience" element={<ExperiencePage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
-      </div>
+      <AppShell />
     </BrowserRouter>
   );
 }

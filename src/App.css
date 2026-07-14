@@ -30,6 +30,68 @@ html, body, #root {
 a { color: var(--cyan); text-decoration: none; }
 a:hover { text-decoration: none; }
 
+/* ─── Loading screen ────────────────────────────────────────────────
+   Shown until the hero's 3D scene (three.js chunk + head model) has
+   finished loading, so the page never sits partially-rendered while
+   that ~2.8MB asset downloads. Sits above everything (including the
+   navbar); ParticleBackground keeps animating underneath the whole
+   time since it's mounted independently and unaffected by this overlay. */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 10, 20, 0.82);
+  backdrop-filter: blur(2px);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+.loading-screen--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-mark {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-mark-text {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-bright);
+  text-shadow: 0 0 16px rgba(0, 234, 255, 0.5);
+  z-index: 1;
+}
+
+.loading-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-hot);
+  animation: loading-ring-pulse 1.8s ease-out infinite;
+}
+
+.loading-ring--2 {
+  animation-delay: 0.6s;
+}
+
+@keyframes loading-ring-pulse {
+  0%   { transform: scale(0.55); opacity: 0.9; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
 /* ─── Hero decorative layer ─────────────────────────────────────── */
 .hero-decor {
   position: fixed;
