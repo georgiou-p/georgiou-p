@@ -231,7 +231,10 @@ a:hover { text-decoration: none; }
   overflow-x: hidden;
   position: relative;
   z-index: 1;
+  scrollbar-width: none;
 }
+
+.home-scroll::-webkit-scrollbar { display: none; }
 
 .snap-section {
   height: calc(100vh - 56px);
@@ -323,9 +326,16 @@ a:hover { text-decoration: none; }
 }
 
 /* ─── Page 2: what I do + AI assistant ──────────────────────────── */
+/* Unlike the hero (a fixed full-viewport 3D scene), this section has no
+   reason to be viewport-locked — sizing it to its own content and letting
+   the single outer .home-scroll handle all scrolling avoids a nested
+   inner scroll container, which stutters on handoff between the two. */
 .whatido-page {
   position: relative;
   align-items: stretch;
+  height: auto;
+  min-height: calc(100vh - 56px);
+  overflow: visible;
 }
 
 .whatido-col {
@@ -333,7 +343,10 @@ a:hover { text-decoration: none; }
   display: flex;
   align-items: center;
   padding: 2rem 2rem 2rem 4rem;
-  overflow-y: auto;
+}
+
+@media (max-height: 800px) {
+  .whatido-col { align-items: flex-start; padding-top: 3rem; }
 }
 
 .chat-col {
@@ -451,17 +464,17 @@ a:hover { text-decoration: none; }
 .whatido-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 0.75rem;
 }
 
 .whatido-card {
   display: flex;
   align-items: flex-start;
-  gap: 1.4rem;
+  gap: 1rem;
   background: rgba(13, 26, 46, 0.55);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.6rem 1.8rem;
+  border-radius: 14px;
+  padding: 1.1rem 1.3rem;
   transition: border-color var(--transition), transform var(--transition);
 }
 
@@ -472,19 +485,19 @@ a:hover { text-decoration: none; }
 
 .whatido-icon {
   flex-shrink: 0;
-  width: 64px;
-  height: 64px;
+  width: 46px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: 12px;
   background: rgba(0, 234, 255, 0.08);
   color: var(--cyan);
 }
 
 .whatido-icon svg {
-  width: 30px;
-  height: 30px;
+  width: 22px;
+  height: 22px;
 }
 
 .whatido-card-body {
@@ -503,25 +516,25 @@ a:hover { text-decoration: none; }
 }
 
 .whatido-title {
-  font-size: 1.3rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-bright);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
   font-family: var(--font-mono);
 }
 
 .whatido-org {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.5rem;
   font-family: var(--font-mono);
 }
 
 .whatido-body {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: var(--text);
-  line-height: 1.6;
-  margin-bottom: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
   font-family: var(--font-mono);
 }
 
@@ -529,7 +542,7 @@ a:hover { text-decoration: none; }
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--cyan);
   width: fit-content;
