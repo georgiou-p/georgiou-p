@@ -14,10 +14,8 @@
       technique: https://github.com/rafgraph/spa-github-pages
     -->
     <script>
-      // 1 while served under /georgiou-p/ on the default GitHub Pages
-      // URL (keeps the repo-name path segment); switch to 0 once the
-      // georgiou.pro custom domain is live and this serves from root.
-      var segmentsToKeep = 1;
+      // 0: served from the root of georgiou.pro (no subpath segment).
+      var segmentsToKeep = 0;
       var l = window.location;
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
