@@ -261,6 +261,17 @@ function AppShell() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    // React Router doesn't reset scroll on navigation (only real page
+    // loads do that) — without this, navigating from partway down
+    // /projects to /experience lands mid-page instead of at the top.
+    // "/" manages its own scroll reset (see HomePage), so this only
+    // needs to cover the plain-document-flow routes.
+    if (location.pathname !== '/') {
+      window.scrollTo({ top: 0 });
+    }
+  }, [location.pathname]);
+
   const showLoadingScreen = location.pathname === '/' && !heroReady;
 
   return (
