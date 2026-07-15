@@ -9,7 +9,7 @@ export const SEO_DEFAULTS = {
 
 export const ROUTE_SEO = {
   '/': {
-    title: 'Prokopis Georgiou — AI Researcher & PhD Candidate',
+    title: 'Prokopis Georgiou',
     description: 'Prokopis Georgiou is an AI researcher and PhD candidate at the University of Southampton (SustAI CDT), focused on sustainable AI, multi-agent systems, and responsible AI for real-world impact.',
     path: '/',
     type: 'website',
