@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { experiences, education } from '../data/experience';
+import Seo from './Seo';
+import { getSeoForPath } from '../data/seo';
 
 const TYPE_COLORS = {
   research: '#00eaff',
@@ -10,7 +12,7 @@ const TYPE_COLORS = {
 function TimelineItem({ exp, index, isLast }) {
   const color = TYPE_COLORS[exp.type] || '#00eaff';
   return (
-    <div className="tl-item" style={{ animationDelay: `${index * 70}ms` }}>
+    <article className="tl-item" style={{ animationDelay: `${index * 70}ms` }}>
       <div className="tl-spine">
         <div className="tl-dot" style={{ background: color }} />
         {!isLast && <div className="tl-line" />}
@@ -29,37 +31,40 @@ function TimelineItem({ exp, index, isLast }) {
           {exp.tags.map(t => <span key={t} className="pcard-tag">{t}</span>)}
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
 export default function ExperiencePage() {
   return (
-    <div className="page">
-      <Link to="/" className="page-back-link">← back</Link>
-      <div className="page-header">
-        <p className="page-label">experience</p>
-        <h1 className="page-title">Where I've Been</h1>
-        <p className="page-subtitle">just what I want to show you</p>
-      </div>
-
-      <section className="exp-section">
-        <p className="exp-label">work & research</p>
-        <div className="timeline">
-          {experiences.map((exp, i) => (
-            <TimelineItem key={exp.id} exp={exp} index={i} isLast={i === experiences.length - 1} />
-          ))}
+    <>
+      <Seo {...getSeoForPath('/experience')} />
+      <main className="page">
+        <Link to="/" className="page-back-link">← back</Link>
+        <div className="page-header">
+          <p className="page-label">experience</p>
+          <h1 className="page-title">Where I've Been</h1>
+          <p className="page-subtitle">just what I want to show you</p>
         </div>
-      </section>
 
-      <section className="exp-section">
-        <p className="exp-label">education</p>
-        <div className="timeline">
-          {education.map((exp, i) => (
-            <TimelineItem key={exp.id} exp={exp} index={i} isLast={i === education.length - 1} />
-          ))}
-        </div>
-      </section>
-    </div>
+        <section className="exp-section">
+          <h2 className="exp-label">work & research</h2>
+          <div className="timeline">
+            {experiences.map((exp, i) => (
+              <TimelineItem key={exp.id} exp={exp} index={i} isLast={i === experiences.length - 1} />
+            ))}
+          </div>
+        </section>
+
+        <section className="exp-section">
+          <h2 className="exp-label">education</h2>
+          <div className="timeline">
+            {education.map((exp, i) => (
+              <TimelineItem key={exp.id} exp={exp} index={i} isLast={i === education.length - 1} />
+            ))}
+          </div>
+        </section>
+      </main>
+    </>
   );
 }

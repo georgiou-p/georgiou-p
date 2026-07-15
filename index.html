@@ -8,7 +8,29 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prokopis Georgiou</title>
+    <title>Prokopis Georgiou — AI Researcher &amp; PhD Candidate</title>
+    <!--
+      Static fallback tags — the app is a pure client-side-rendered SPA
+      (no prerendering), so this is the only content non-JS crawlers and
+      link-preview bots (Bing, LinkedIn, Slack, Discord, Twitter/X) will
+      ever see for any route: they don't execute the JS that would
+      otherwise update these per-page via src/components/Seo.jsx. Google
+      generally does execute JS and will see the per-route values instead.
+    -->
+    <meta name="description" content="Prokopis Georgiou is an AI researcher and PhD candidate at the University of Southampton (SustAI CDT), focused on sustainable AI, multi-agent systems, and responsible AI for real-world impact." />
+    <link rel="canonical" href="https://georgiou.pro/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Prokopis Georgiou" />
+    <meta property="og:title" content="Prokopis Georgiou — AI Researcher &amp; PhD Candidate" />
+    <meta property="og:description" content="Prokopis Georgiou is an AI researcher and PhD candidate at the University of Southampton (SustAI CDT), focused on sustainable AI, multi-agent systems, and responsible AI for real-world impact." />
+    <meta property="og:url" content="https://georgiou.pro/" />
+    <meta property="og:image" content="https://georgiou.pro/og-image.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Prokopis Georgiou — AI Researcher &amp; PhD Candidate" />
+    <meta name="twitter:description" content="Prokopis Georgiou is an AI researcher and PhD candidate at the University of Southampton (SustAI CDT), focused on sustainable AI, multi-agent systems, and responsible AI for real-world impact." />
+    <meta name="twitter:image" content="https://georgiou.pro/og-image.png" />
     <!-- Font preconnect — eliminates serial round-trip from CSS @import -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

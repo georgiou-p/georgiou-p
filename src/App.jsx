@@ -5,7 +5,34 @@ import ChatPanel from './components/ChatPanel';
 import ParticleBackground from './components/ParticleBackground';
 import WhatIDoSection from './components/WhatIDoSection';
 import LoadingScreen from './components/LoadingScreen';
+import Seo from './components/Seo';
+import JsonLd from './components/JsonLd';
+import { getSeoForPath } from './data/seo';
+import { experiences, education } from './data/experience';
 import './App.css';
+
+const PERSON_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Prokopis Georgiou',
+  jobTitle: 'AI Researcher & PhD Candidate',
+  url: 'https://georgiou.pro',
+  image: 'https://georgiou.pro/og-image.png',
+  sameAs: [
+    'https://www.linkedin.com/in/prokopis-georgiou/',
+    'https://github.com/georgiou-p',
+  ],
+  alumniOf: education.map(e => ({
+    '@type': 'EducationalOrganization',
+    name: e.org,
+  })),
+  worksFor: experiences
+    .filter(e => e.type !== 'military')
+    .map(e => ({
+      '@type': 'Organization',
+      name: e.org,
+    })),
+};
 
 // Heavy Three.js chunk — loaded lazily so it doesn't block initial paint
 const HologramHead  = lazy(() => import('./components/HologramHead'));
@@ -166,32 +193,36 @@ function HomePage({ onHeroReady }) {
   }, []);
 
   return (
-    <main className="home-scroll" ref={scrollRef}>
-      <section className="snap-section hero-section" ref={heroRef}>
-        <div className="hero-visual-col">
-          <Suspense fallback={null}>
-            <HologramHead scrollProgress={scrollProgress} onReady={onHeroReady} />
-          </Suspense>
-        </div>
-        <div className="hero-text-col">
-          <IntroPanel />
-        </div>
-      </section>
+    <>
+      <Seo {...getSeoForPath('/')} />
+      <JsonLd data={PERSON_JSON_LD} />
+      <main className="home-scroll" ref={scrollRef}>
+        <section className="snap-section hero-section" ref={heroRef}>
+          <div className="hero-visual-col">
+            <Suspense fallback={null}>
+              <HologramHead scrollProgress={scrollProgress} onReady={onHeroReady} />
+            </Suspense>
+          </div>
+          <div className="hero-text-col">
+            <IntroPanel />
+          </div>
+        </section>
 
-      <section className="snap-section whatido-page" ref={whatIDoRef}>
-        <div className="whatido-col">
-          <WhatIDoSection />
-        </div>
-        <div className={`chat-col ${chatExpanded ? 'chat-open' : ''}`}>
-          <ChatPanel
-            onFirstMessage={() => {}}
-            onFocusExpand={() => {}}
-            expanded={chatExpanded}
-            onToggle={() => { if (isMobile()) setChatExpanded(o => !o); }}
-          />
-        </div>
-      </section>
-    </main>
+        <section className="snap-section whatido-page" ref={whatIDoRef}>
+          <div className="whatido-col">
+            <WhatIDoSection />
+          </div>
+          <div className={`chat-col ${chatExpanded ? 'chat-open' : ''}`}>
+            <ChatPanel
+              onFirstMessage={() => {}}
+              onFocusExpand={() => {}}
+              expanded={chatExpanded}
+              onToggle={() => { if (isMobile()) setChatExpanded(o => !o); }}
+            />
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
 

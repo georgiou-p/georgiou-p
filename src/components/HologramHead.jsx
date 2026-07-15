@@ -437,6 +437,7 @@ export default function HologramHead({ scrollProgress, onReady }) {
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent', width: '100%', height: '100%' }}
         resize={{ scroll: false, offsetSize: true }}
+        aria-hidden="true"
       >
         <fog attach="fog" args={['#050a14', 6, 15]} />
         <ambientLight intensity={0.7} />
