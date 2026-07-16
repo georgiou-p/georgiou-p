@@ -416,6 +416,15 @@ a:hover { text-decoration: none; }
   display: flex;
   flex-direction: column;
   padding: 2rem 4rem 2rem 3rem;
+  /* .whatido-page no longer has a fixed height (it grows to fit the
+     cards column), so without this the chat panel has nothing bounded
+     to fill — flex: 1 on .chat-messages then has no effect and the
+     conversation just grows the whole page instead of scrolling
+     internally. Pin the chat to one viewport height so it always
+     scrolls in place. */
+  height: calc(100vh - 56px);
+  position: sticky;
+  top: 56px;
 }
 
 @media (min-width: 769px) {
@@ -1390,6 +1399,7 @@ a.pcard:hover .pcard-name::after { opacity: 1; }
     flex: none;
     height: 480px;
     padding: 0 3rem 2rem;
+    position: static;
   }
 }
 
@@ -1497,6 +1507,7 @@ a.pcard:hover .pcard-name::after { opacity: 1; }
     flex: 0 0 130px;
     padding: 0 1.25rem 1rem;
     border-top: 1px solid var(--border);
+    position: static;
   }
 
   .chat-col:not(.chat-open) { flex: 0 0 130px; }
@@ -1513,6 +1524,16 @@ a.pcard:hover .pcard-name::after { opacity: 1; }
     background: var(--bg);
     padding: 0;
     border-top: none;
+    /* Safari on iOS doesn't always propagate a fixed ancestor's height
+       down through display:flex to a flex:1 descendant — pin it
+       explicitly so .chat-panel (and in turn .chat-messages) actually
+       has a bounded box to scroll within, instead of growing past the
+       viewport and pushing the input row out of view. */
+    height: calc(100dvh - 56px);
+  }
+
+  .chat-col.chat-open .chat-panel {
+    height: 100%;
   }
 
   .chat-mobile-handle {
