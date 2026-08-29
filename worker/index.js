@@ -233,7 +233,14 @@ export default {
         model: MODEL,
         messages: openaiMessages,
         temperature: 0.7,
-        max_tokens: 200,
+        max_tokens: 400,
+        // gpt-oss-120b is a reasoning model — it spends part of its
+        // token budget on an internal "reasoning" field before writing
+        // the actual reply. With a low max_tokens and default reasoning
+        // effort, it could burn the whole budget reasoning and leave
+        // content empty ("No response from AI."). Keep effort low since
+        // replies are meant to be short anyway.
+        reasoning_effort: 'low',
       }),
     });
 
@@ -244,6 +251,16 @@ export default {
     }
 
     const text = data.choices?.[0]?.message?.content ?? '';
+
+    if (!text) {
+      // Surfaces in Cloudflare's Worker logs — e.g. finish_reason
+      // "length" means the model ran out of tokens (likely spent on
+      // internal reasoning) before writing any reply content.
+      console.error('Empty content from Groq:', JSON.stringify({
+        finish_reason: data.choices?.[0]?.finish_reason,
+        has_reasoning: !!data.choices?.[0]?.message?.reasoning,
+      }));
+    }
 
     const latestUserMessage = [...messages].reverse().find(m => m.role === 'user');
     const latestUserText = latestUserMessage?.parts?.[0]?.text ?? latestUserMessage?.content ?? '';
