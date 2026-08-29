@@ -210,7 +210,11 @@ export default {
       return json({ candidates: [{ content: { parts: [{ text: 'Got it.' }] } }] });
     }
 
-    const recentMessages = messages.slice(-5);
+    // Wide enough that a name/email exchange (or any multi-turn detail)
+    // doesn't scroll out of the model's view after just a couple more
+    // replies — it previously lost track of contact info given 2-3
+    // messages earlier and kept re-asking for it.
+    const recentMessages = messages.slice(-12);
     const openaiMessages = [
       { role: 'system', content: SYSTEM_PROMPT },
       ...recentMessages.map(m => ({
